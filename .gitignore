@@ -1,0 +1,22 @@
+# Ignore compiled class files
+*.class
+
+# Ignore output directories
+/out/
+/bin/
+
+# Ignore JAR files
+*.jar
+
+# Ignore log files
+*.log
+
+# Ignore IntelliJ/NetBeans/Eclipse specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+*.nbproject/
+*.class
+*.DS_Store
+*.vscode/
