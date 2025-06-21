@@ -42,29 +42,30 @@ public class User {
 	}
 
 	public static User login(Database db, String email, String password) {
-		String[] conditions = {
-				String.format("EMAIL = '%s'", email),
-				String.format("PASSWORD = '%s'", password),
-				};
+    // Prevent SQL issues by escaping single quotes
+    email = email.replace("'", "''");
+    password = password.replace("'", "''");
 
-		try {
-			ResultSet rs = db.getRows("USERS", conditions);
-			if (rs != null) {
-				while (rs.next()) {
-					String role = rs.getString("ROLE");
-					int id = rs.getInt("ID");
+    // Combine email and password into a single condition
+    String condition = String.format("EMAIL = '%s' AND PASSWORD = '%s'", email, password);
 
-					return new User(id, email, password, role);
-				}
-			}
+    try {
+        ResultSet rs = db.getRows("USERS", new String[] { condition });
 
-		} catch (Exception e) {
-			System.out.println("User Error while getting user info");
-			e.printStackTrace();
-		}
+        if (rs != null && rs.next()) {
+            String role = rs.getString("ROLE");
+            int id = rs.getInt("ID");
 
-		return null;
-	}
+            return new User(id, email, password, role);
+        }
+    } catch (Exception e) {
+        System.out.println("User Error while getting user info");
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
 
 	public static void insertUser(Database db, String email, String password, String role) {
 		String schema = "EMAIL, PASSWORD, ROLE";

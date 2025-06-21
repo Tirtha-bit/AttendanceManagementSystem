@@ -246,6 +246,7 @@ public class TeacherDashboard extends JFrame {
 		viewnotice.setLayout(null);
 
 
+
 		getContentPane().add(teacherPane, BorderLayout.CENTER);
 	}
 }

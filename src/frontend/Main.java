@@ -8,50 +8,53 @@ import classes.*;
 // TODO
 public class Main {
 	public static Database db;
-
-	public static void main(String[] args) {
-		String db_url = "postgresql://postgres:yrCLKPWu24@localhost:5432/attendance_db";
+        public static void main(String[] args) {
+		String db_url = "postgres://postgres:mynewpassword123@localhost:5432/attendance_db";
 		db = new Database(db_url);
+
+		User.dropTable(db);
+        User.createTable(db);
+        User.insertUser(db, "admin@email.com", "admin", "ADMIN");
+        User.insertUser(db, "student.1@email.com", "studentpass", "STUDENT");
+        User.insertUser(db, "teacher.1@email.com", "teacherpass", "TEACHER");
+
+		Student.dropTable(db);
+        Student.createTable(db);
+        Student.insert(db, 2, 1, "Student 1", 2, "Computer", 110001, "+91 90000 00001", "MUMBAI, MH");
+
+		Teacher.dropTable(db);
+        Teacher.createTable(db);
+        Teacher.insert(db, 3, "Teacher 1", "Computer", 220001, "+91 90000 00003", "PUNE, MH");
+
+		Admin.dropTable(db);
+        Admin.createTable(db);
+        Admin.insert(db, 1, "Admin", "+91 90000 00003", "PUNE, MH");
+
+		Notice.dropTable(db);              
+        Notice.createTable(db);          
+        Notice.insertNotice(          
+    db,
+    "Welcome Notice",
+    "This is your first notice. Edit or delete it from the dashboard.",
+    "2025-06-11"
+);
+
 
 
 		Student.printStudents(db);
 		Teacher.printTeachers(db);
 		Admin.printAdmins(db);
 
+
 		LoginGUI loginDashboard = new LoginGUI();
 		loginDashboard.setVisible(true);
 
-// 	Test User Table
-//		User.dropTable(db);
-//		User.createTable(db);
-//		User.insertUser(db, "admin@email.com", "admin", "ADMIN");
-//		User.insertUser(db, "student.2@email.com", "p", "STUDENT");
-//		User.insertUser(db, "student.1@email.com", "t", "STUDENT");
-//		User.insertUser(db, "teacher.1@email.com", "t", "TEACHER");
-
-// 	Test Student Table
-//		Student.dropTable(db);
-//		Student.createTable(db);
-//		Student.insert(db, 1, 1, "Student 1", 2, "Computer", 110001, "+91 90000 00001", "MUMBAI, MH");
+		
 //		Student.insert(db, 2, 1, "Student 2", 2, "Computer", 110002, "+91 90000 00002", "PUNE, MH");
 //		Student.printStudents(db);
 
-// 	Test Teacher Table
-//		Teacher.dropTable(db);
-//		Teacher.createTable(db);
-//		Teacher.insert(db, 4, "Teacher 1", "Computer", 220001, "+91 90000 00003", "PUNE, MH");
-
-// 	Test Admin Table
-//		Admin.dropTable(db);
-//		Admin.createTable(db);
-//		Admin.insert(db, 1, "Admin", "+91 90000 00003", "PUNE, MH");
-//		Admin.printAdmins(db);
-
 // 	Test Division Table
-//		Division.dropTable(db);
-//		Division.createTable(db);
-//		Division.insert(db, 2, "CS-A", "Computer");
-//		Division.insert(db, 3, "CS-D", "Computer");
+//		Division.dropTable(db);n.insert(db, 3, "CS-D", "Computer");
 //		Division.insert(db, 4, "CH-D", "Chemical");
 //		Division.printDivisions(db);
 

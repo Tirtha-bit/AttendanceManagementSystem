@@ -110,6 +110,10 @@ public class StudentDashboard extends JFrame{
 
 
 		getContentPane().add(studentPane, BorderLayout.CENTER);
+
+		this.setSize(1200, 700);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
 	}
 
 	private void defaulterFilter(int cutoff) {

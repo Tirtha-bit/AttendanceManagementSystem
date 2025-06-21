@@ -92,6 +92,33 @@ public class NoticeTab {
 		});
 
 		if (this.isAdmin) {
+
+			JButton editButton = new JButton("Edit");
+            editButton.setFont(new Font("Calibri", Font.BOLD, 20));
+            editButton.setBounds(701, 593, 120, 44);
+            viewnotice.add(editButton);
+
+            editButton.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+              if (notices.size() == 0) return;
+
+            Notice curr = notices.get(currentIdx);
+
+        String newTitle = JOptionPane.showInputDialog(viewnotice, "Edit Title:", curr.title);
+        if (newTitle == null || newTitle.trim().isEmpty()) return;
+
+        String newContent = JOptionPane.showInputDialog(viewnotice, "Edit Content:", curr.content);
+        if (newContent == null || newContent.trim().isEmpty()) return;
+
+        curr.title = newTitle;
+        curr.content = newContent;
+        curr.update(Main.db);
+
+        updateNotices(); // Refresh the list
+    }
+});
+
+
 			prevButton = new JButton(" < Previous");
 			prevButton.setFont(new Font("Calibri", Font.BOLD, 20));
 			prevButton.setBounds(568, 593, 157, 44);

@@ -73,53 +73,71 @@ public class LoginGUI extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String username = emailField.getText();
-				String password = new String(passwordField.getPassword());
-				String role = roleDropdown.getSelectedItem().toString();
+        String username = emailField.getText();
+        String password = new String(passwordField.getPassword());
+        String role = roleDropdown.getSelectedItem().toString().toUpperCase();
 
-				if (username.length() > 0 && password.length() > 0 && role.length() > 0) {
-					User u = User.login(Main.db, username, password);
+        System.out.println("Login Attempted with:");
+        System.out.println("Email: " + username);
+        System.out.println("Role: " + role);
 
-					if (u != null) {
-						u.getInfo();
-						if (role.equals("Student")) {
-							Student student = Student.login(Main.db, u.getId());
-							if (student != null) {
-								student.printAcademicInfo();
-								setVisible(false);
-								StudentDashboard studentDashboard = new StudentDashboard(student);
-								studentDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
-								studentDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-								studentDashboard.setVisible(true);
-							}
-						} else if (role.equals("Teacher")) {
-							Teacher teacher = Teacher.login(Main.db, u.getId());
-							if (teacher != null) {
-								teacher.printAcademicInfo();
-								setVisible(false);
-								TeacherDashboard teacherDashboard = new TeacherDashboard(teacher);
-								teacherDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
-								teacherDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-								teacherDashboard.setVisible(true);
-							}
-						} else if (role.equals("Admin")) {
-							Admin admin = Admin.login(Main.db, u.getId());
-							if (admin != null) {
-								setVisible(false);
-								AdminDashboard adminDashboard = new AdminDashboard(admin);
-								adminDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
-								adminDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-								adminDashboard.setVisible(true);
-							}
-						}
+        if (username.length() > 0 && password.length() > 0 && role.length() > 0) {
+            User u = User.login(Main.db, username, password);
 
-					}
-				}
+            if (u != null) {
+                u.getInfo();
 
+                switch (role) {
+                    case "STUDENT":
+                        Student student = Student.login(Main.db, u.getId());
+                        if (student != null) {
+                            System.out.println("Student login successful.");
+                            setVisible(false);
+                            StudentDashboard studentDashboard = new StudentDashboard(student);
+                            studentDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            studentDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            studentDashboard.setVisible(true);
+                        }
+                        break;
 
-			}
+                    case "TEACHER":
+                        Teacher teacher = Teacher.login(Main.db, u.getId());
+                        if (teacher != null) {
+                            System.out.println("Teacher login successful.");
+                            setVisible(false);
+                            TeacherDashboard teacherDashboard = new TeacherDashboard(teacher);
+                            teacherDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            teacherDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            teacherDashboard.setVisible(true);
+                        }
+                        break;
 
-		});
+                    case "ADMIN":
+                        Admin admin = Admin.login(Main.db, u.getId());
+                        if (admin != null) {
+                            System.out.println("Admin login successful.");
+                            setVisible(false);
+                            AdminDashboard adminDashboard = new AdminDashboard(admin);
+                            adminDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            adminDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            adminDashboard.setVisible(true);
+                        } else {
+                            System.out.println("Admin.login() returned null.");
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Unknown role selected.");
+                        break;
+                }
+            } else {
+                System.out.println("User login failed. Invalid credentials.");
+            }
+        } else {
+            System.out.println("Username or password or role is empty.");
+        }
+    }
+});
 
 		loginpanel.add(loginButton);
 

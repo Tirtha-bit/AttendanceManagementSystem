@@ -2,7 +2,7 @@ package backend;
 
 public class TestDB {
     public static void main(String[] args) {
-        String url = "postgresql://postgres:yrCLKPWu24@localhost:5432/attendance_db";
+        String url = "postgres://postgres:mynewpassword123@localhost:5432/attendance_db";
 
         Database db = new Database(url);
 

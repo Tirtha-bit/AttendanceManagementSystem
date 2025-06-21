@@ -34,7 +34,7 @@ public class Database {
 		try {
 			System.out.println("Connecting to database...");
 			Class.forName("org.postgresql.Driver");
-			this.conn = getConnection(url);
+			conn = getConnection(url);
 			System.out.println("Postgresql database connected");
 
 		} catch (Exception e) {
@@ -79,15 +79,16 @@ public class Database {
 		}
 	};
 	public void dropTable(String name) {
-		// Does not return a ResultSet
-		this.sql = "DROP TABLE " + name + ";";
-		try {
-			stmt.executeUpdate(this.sql);
-		} catch (Exception e) {
-			System.out.println("Error while dropping table " + name);
-			e.printStackTrace();
-		}
+	// Safely drops table only if it exists
+	this.sql = "DROP TABLE IF EXISTS " + name + ";";
+	try {
+		stmt.executeUpdate(this.sql);
+		System.out.println("Dropped table " + name + " if it existed.");
+	} catch (Exception e) {
+		System.out.println("Unexpected error while dropping table " + name);
+		e.printStackTrace();
 	}
+}
 
 	public void insertRow(String table, String schema, String values) {
 		this.sql = "INSERT INTO " + table + " (" + schema + ") VALUES (" + values + ");";
@@ -177,4 +178,18 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
+
+	public void executeUpdate(String sql, Object[] values) {
+    try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        for (int i = 0; i < values.length; i++) {
+            stmt.setObject(i + 1, values[i]);
+        }
+        stmt.executeUpdate();
+    } catch (Exception e) {
+        System.out.println("DB Error in executeUpdate: " + sql);
+        e.printStackTrace();
+    }
+}
+
+
 }
