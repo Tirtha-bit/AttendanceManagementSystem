@@ -21,14 +21,6 @@ A Java-based GUI application for managing student attendance using role-based ac
 4. Run:
    java -cp "out;lib/*" frontend.Main
 
-## Project Structure
-AttendanceManagementSystem/
-├── src/
-│   ├── backend/
-│   └── frontend/
-├── lib/
-├── out/
-└── README.md
 
 ## Author
 Made by Tirtha-bit 💻
