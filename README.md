@@ -21,6 +21,3 @@ A Java-based GUI application for managing student attendance using role-based ac
 4. Run:
    java -cp "out;lib/*" frontend.Main
 
-
-## Author
-Made by Tirtha-bit 💻
