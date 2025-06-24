@@ -5,49 +5,59 @@ import javax.swing.JFrame;
 import backend.Database;
 import classes.*;
 
-// TODO
 public class Main {
 	public static Database db;
-        public static void main(String[] args) {
+
+	public static void main(String[] args) {
+		boolean resetDatabase = false; // ✅ Set to true only when you want to reset all tables
+
 		String db_url = "postgres://postgres:mynewpassword123@localhost:5432/attendance_db";
 		db = new Database(db_url);
 
-		User.dropTable(db);
-        User.createTable(db);
-        User.insertUser(db, "admin@email.com", "admin", "ADMIN");
-        User.insertUser(db, "student.1@email.com", "studentpass", "STUDENT");
-        User.insertUser(db, "teacher.1@email.com", "teacherpass", "TEACHER");
+		if (resetDatabase) {
+			// Drop & Recreate USERS Table
+			User.dropTable(db);
+			User.createTable(db);
+			User.insertUser(db, "admin@email.com", "admin", "ADMIN");
+			User.insertUser(db, "student.1@email.com", "studentpass", "STUDENT");
+			User.insertUser(db, "teacher.1@email.com", "teacherpass", "TEACHER");
 
-		Student.dropTable(db);
-        Student.createTable(db);
-        Student.insert(db, 2, 1, "Student 1", 2, "Computer", 110001, "+91 90000 00001", "MUMBAI, MH");
+			// Drop & Recreate STUDENTS Table
+			Student.dropTable(db);
+			Student.createTable(db);
+			Student.insert(db, 2, 1, "Student 1", 2, "Computer", 110001, "+91 90000 00001", "MUMBAI, MH");
 
-		Teacher.dropTable(db);
-        Teacher.createTable(db);
-        Teacher.insert(db, 3, "Teacher 1", "Computer", 220001, "+91 90000 00003", "PUNE, MH");
+			// Drop & Recreate TEACHERS Table
+			Teacher.dropTable(db);
+			Teacher.createTable(db);
+			Teacher.insert(db, 3, "Teacher 1", "Computer", 220001, "+91 90000 00003", "PUNE, MH");
 
-		Admin.dropTable(db);
-        Admin.createTable(db);
-        Admin.insert(db, 1, "Admin", "+91 90000 00003", "PUNE, MH");
+			// Drop & Recreate ADMINS Table
+			Admin.dropTable(db);
+			Admin.createTable(db);
+			Admin.insert(db, 1, "Admin", "+91 90000 00003", "PUNE, MH");
 
-		Notice.dropTable(db);              
-        Notice.createTable(db);          
-        Notice.insertNotice(          
-    db,
-    "Welcome Notice",
-    "This is your first notice. Edit or delete it from the dashboard.",
-    "2025-06-11"
-);
+			// Drop & Recreate NOTICES Table
+			Notice.dropTable(db);
+			Notice.createTable(db);
+			Notice.insertNotice(
+				db,
+				"Welcome Notice",
+				"This is your first notice. Edit or delete it from the dashboard.",
+				"2025-06-11"
+			);
+		}
 
-
-
+		// Optionally print existing data (for debug)
 		Student.printStudents(db);
 		Teacher.printTeachers(db);
 		Admin.printAdmins(db);
 
-
+		// Launch login screen
 		LoginGUI loginDashboard = new LoginGUI();
 		loginDashboard.setVisible(true);
+	}
+}
 
 		
 //		Student.insert(db, 2, 1, "Student 2", 2, "Computer", 110002, "+91 90000 00002", "PUNE, MH");
@@ -119,5 +129,4 @@ public class Main {
 //		adminDashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //		adminDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		adminDashboard.setVisible(true);
-	}
-}
+	
